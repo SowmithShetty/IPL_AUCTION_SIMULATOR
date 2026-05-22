@@ -1,0 +1,91 @@
+/* Custom fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+@import "tailwindcss";
+
+/* === IPL Auction Game — Design System === */
+
+/* Base resets */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #050505;
+  color: #e4e4e7;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Selection color */
+::selection {
+  background: rgba(16, 185, 129, 0.3);
+}
+
+/* Tabular numbers for prices */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Smooth pulse animation */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(16, 185, 129, 0.4);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Screen shake utility */
+@keyframes shake {
+  0%, 100% { transform: translate(0); }
+  10% { transform: translate(-3px, -2px); }
+  20% { transform: translate(3px, 2px); }
+  30% { transform: translate(-2px, 3px); }
+  40% { transform: translate(2px, -2px); }
+  50% { transform: translate(-1px, 1px); }
+}
+
+.shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, #10b981, #5eead4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
