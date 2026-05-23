@@ -326,21 +326,32 @@ const AUCTIONEER_PHRASES = {
 const pickRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 export const getAuctioneerLine = (type, ...args) => {
+  // Translate any player name parameters to full spoken names
+  const processedArgs = args.map(arg => {
+    if (typeof arg === 'string' && PRONUNCIATION_MAP[arg]) {
+      return PRONUNCIATION_MAP[arg];
+    }
+    return arg;
+  });
+
   const phrases = AUCTIONEER_PHRASES[type];
   if (!phrases) return '';
   const phrase = pickRandom(phrases);
-  return typeof phrase === 'function' ? phrase(...args) : phrase;
+  return typeof phrase === 'function' ? phrase(...processedArgs) : phrase;
 };
 
 export const speakText = (text, enabled, cancelPrevious = true) => {
   if (!enabled || !window.speechSynthesis) return;
   if (cancelPrevious) window.speechSynthesis.cancel();
+  
   const msg = new SpeechSynthesisUtterance(text);
-  msg.rate = 1.05;
-  msg.pitch = 0.9;
-  // Try to find a natural-sounding voice
-  const voices = window.speechSynthesis.getVoices();
-  const preferred = voices.find(v => v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Daniel'));
-  if (preferred) msg.voice = preferred;
+  msg.rate = 1.02; // Slightly more deliberate rate for clear understanding
+  msg.pitch = 0.95;
+  
+  const bestVoice = selectBestVoice();
+  if (bestVoice) {
+    msg.voice = bestVoice;
+  }
+  
   window.speechSynthesis.speak(msg);
 };

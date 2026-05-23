@@ -128,7 +128,10 @@ export default function App() {
   useEffect(() => {
     if (phase !== 'AUCTION' || auctionStatus !== 'BIDDING' || !currentPlayer) return;
 
-    const aiDelay = highestBidder ? 800 + Math.random() * 900 : 1800 + Math.random() * 1200;
+    // Slower AI delay (2.8s to 4.2s with bid, 3.2s to 4.7s without bid) to let the timer count down
+    const aiDelay = highestBidder 
+      ? 2800 + Math.random() * 1400 
+      : 3200 + Math.random() * 1500;
 
     aiTimerRef.current = setTimeout(() => {
       const bidderName = getNextAIBidder(currentPlayer, currentBid, highestBidder, aiTeams, getNextBid);
@@ -261,6 +264,21 @@ export default function App() {
       }]);
     }
   }, [currentPlayer, highestBidder, currentBid, userFranchise, doSpeak]);
+
+  // --- GOING ONCE / TWICE COMMENTARY CUES ---
+  const handleGoingOnce = useCallback(() => {
+    const displayName = highestBidder === 'USER' ? userFranchise : highestBidder;
+    if (displayName) {
+      doSpeak(getAuctioneerLine('goingOnce', displayName, currentBid.toFixed(2)));
+    }
+  }, [highestBidder, userFranchise, currentBid, doSpeak]);
+
+  const handleGoingTwice = useCallback(() => {
+    const displayName = highestBidder === 'USER' ? userFranchise : highestBidder;
+    if (displayName) {
+      doSpeak(getAuctioneerLine('goingTwice', displayName, currentBid.toFixed(2)));
+    }
+  }, [highestBidder, userFranchise, currentBid, doSpeak]);
 
   // --- NEXT PLAYER ---
   const nextPlayer = () => {
@@ -402,6 +420,8 @@ export default function App() {
             bidCount={bidCount}
             salesLog={salesLog}
             onResolve={resolvePlayer}
+            onGoingOnce={handleGoingOnce}
+            onGoingTwice={handleGoingTwice}
           />
         )}
         {phase === 'SUMMARY' && (

@@ -46,7 +46,7 @@ export default function Leaderboard({ logs, aiTeams, userFranchise, userPurse, u
     .slice(0, 10);
 
   return (
-    <div className="w-full lg:w-[28%] flex flex-col h-[400px] lg:h-auto border border-white/10 rounded-[2rem] bg-black/40 backdrop-blur-md overflow-hidden shadow-2xl">
+    <div className="w-full lg:w-[28%] flex flex-col h-[450px] lg:h-full border border-white/10 rounded-[2rem] bg-black/40 backdrop-blur-md overflow-hidden shadow-2xl shrink-0">
       {/* Tab headers */}
       <div className="bg-white/5 border-b border-white/10 p-2 flex gap-1 shrink-0">
         {tabs.map(tab => {

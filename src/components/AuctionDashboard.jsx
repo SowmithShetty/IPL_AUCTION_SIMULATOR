@@ -12,6 +12,7 @@ export default function AuctionDashboard({
   player, currentBid, highestBidder, status, logs, userPurse,
   onStart, onBid, onNext, poolRemaining, userFranchise, userTeam,
   onSkipSet, aiTeams, bidCount, salesLog, onResolve,
+  onGoingOnce, onGoingTwice,
 }) {
   const isHighest = highestBidder === 'USER';
   const canAfford = userPurse >= getNextBid(currentBid);
@@ -73,10 +74,10 @@ export default function AuctionDashboard({
     <>
       <GavelAnimation show={showGavel} onComplete={() => setShowGavel(false)} />
 
-      <div className="p-3 md:p-6 lg:p-8 max-w-[1500px] mx-auto h-full flex flex-col lg:flex-row gap-4 lg:gap-6 z-10 relative items-stretch pb-12">
+      <div className="p-3 md:p-6 lg:p-8 max-w-[1600px] w-full mx-auto lg:h-[calc(100vh-100px)] flex flex-col lg:flex-row gap-4 lg:gap-6 z-10 relative items-stretch pb-8 overflow-hidden">
         {/* LEFT: Player Card */}
-        <div className="w-full lg:w-[32%] flex flex-col justify-center items-center gap-4">
-          <div className="text-[10px] font-black text-emerald-500 uppercase tracking-widest flex items-center gap-2 bg-emerald-500/10 px-4 py-1.5 rounded-full border border-emerald-500/20">
+        <div className="w-full lg:w-[32%] flex flex-col justify-center items-center gap-3 lg:h-full">
+          <div className="text-[10px] font-black text-emerald-500 uppercase tracking-widest flex items-center gap-2 bg-emerald-500/10 px-4 py-1.5 rounded-full border border-emerald-500/20 shrink-0">
             <Users className="w-3 h-3" /> Remaining: <span className="text-white">{poolRemaining}</span>
           </div>
 
@@ -89,7 +90,7 @@ export default function AuctionDashboard({
         </div>
 
         {/* CENTER: Bidding Control */}
-        <div className="w-full lg:w-[40%] flex flex-col justify-center gap-4">
+        <div className="w-full lg:w-[40%] flex flex-col justify-center gap-4 lg:h-full">
           <div className="bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-[2.5rem] rounded-tl-xl rounded-br-xl p-6 md:p-8 text-center shadow-2xl relative overflow-hidden">
             <h3 className="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-2 flex items-center justify-center gap-2">
               <DollarSign className="w-3 h-3" /> Active Bid
@@ -137,10 +138,10 @@ export default function AuctionDashboard({
                 <CountdownTimer
                   key={countdownResetKey.current}
                   isActive={countdownActive}
-                  duration={highestBidder ? 5 : 7}
+                  duration={5}
                   onExpire={handleCountdownExpire}
-                  onGoingOnce={() => {}}
-                  onGoingTwice={() => {}}
+                  onGoingOnce={onGoingOnce}
+                  onGoingTwice={onGoingTwice}
                 />
               </div>
             )}
