@@ -164,10 +164,10 @@ export default function SummaryPhase({ userTeam, remainingPurse, userFranchise, 
                 className="p-4 md:p-5 bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl relative overflow-hidden"
               >
                 <div className={`absolute top-0 left-0 w-1.5 h-full ${!player.isRetained ? 'bg-emerald-500' : 'bg-violet-500'}`} />
-                <div className="font-black italic text-base md:text-lg text-white tracking-tight pl-2">
+                <div className="font-black italic text-base md:text-lg text-white tracking-tight pl-2 break-words">
                   {player.flag} {player.name}
                 </div>
-                <div className="text-[9px] text-zinc-400 uppercase font-bold tracking-widest mb-3 pl-2 flex items-center gap-1.5">
+                <div className="text-[9px] text-zinc-400 uppercase font-bold tracking-widest mb-3 pl-2 flex flex-wrap items-center gap-1.5">
                   {player.style} <span className="text-zinc-700">•</span>
                   <span className="bg-white/10 px-1.5 py-0.5 rounded text-[8px] font-black tracking-widest uppercase text-zinc-300">{player.countryName}</span>
                 </div>
@@ -255,8 +255,8 @@ function AwardCard({ title, player, detail, color, borderColor }) {
       className={`bg-gradient-to-br ${color} border ${borderColor} rounded-2xl p-4 md:p-5`}
     >
       <div className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-2">{title}</div>
-      <div className="font-black italic text-base md:text-lg text-white tracking-tight">{player}</div>
-      <div className="text-[10px] text-zinc-400 font-bold mt-1">{detail}</div>
+      <div className="font-black italic text-base md:text-lg text-white tracking-tight break-words">{player}</div>
+      <div className="text-[10px] text-zinc-400 font-bold mt-1 break-words">{detail}</div>
     </motion.div>
   );
 }

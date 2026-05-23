@@ -72,11 +72,11 @@ export default function PoolModal({ onClose, poolData }) {
                     }`} />
                     <div className="flex justify-between items-start mb-3 pl-4">
                       <div className="min-w-0 flex-1">
-                        <h3 className="font-black italic text-lg md:text-xl tracking-tight text-white truncate">
+                        <h3 className="font-black italic text-lg md:text-xl tracking-tight text-white break-words">
                           {player.flag} {player.name}
                         </h3>
-                        <div className="text-[10px] text-zinc-400 uppercase font-bold tracking-widest mb-2 flex items-center gap-1.5 flex-wrap">
-                          <span className="truncate max-w-[160px]">{player.style}</span> <span className="text-zinc-700 shrink-0">•</span>
+                        <div className="text-[10px] text-zinc-400 uppercase font-bold tracking-widest mb-2 flex flex-wrap items-center gap-1.5">
+                          <span className="break-words">{player.style}</span> <span className="text-zinc-700 shrink-0">•</span>
                           <span className="bg-white/10 px-1.5 py-0.5 rounded text-[9px] font-black tracking-widest uppercase text-zinc-300 shrink-0">{player.countryName}</span>
                         </div>
                         <div className="flex gap-2 items-center">
