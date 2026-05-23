@@ -86,18 +86,14 @@ export default function PlayerCard({ player, status, currentBid, getDealEvaluati
 
             {/* Player Name & Info Section */}
             <div className="text-center mb-2 shrink-0">
-              {/* Country Badge */}
-              <div className="inline-flex items-center gap-1.5 bg-white/5 border border-white/10 px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider mb-3 text-zinc-300">
-                <span className="text-sm leading-none">{player.flag}</span>
-                <span className="leading-none">{player.countryName}</span>
-              </div>
-
               {/* Profile Avatar / Initial Badge */}
               <div className="w-16 h-16 xl:w-20 xl:h-20 rounded-full bg-gradient-to-br from-zinc-800 to-zinc-950 border-2 border-white/15 flex items-center justify-center shadow-lg mx-auto mb-3 relative overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-t from-emerald-500/10 to-transparent opacity-50" />
                 <span className="text-2xl xl:text-3xl font-black italic tracking-tighter text-emerald-400 font-sans select-none">
                   {player.name.replace(/[^A-Z]/g, '').slice(0, 2)}
                 </span>
+                {/* Flag overlay on avatar */}
+                <span className="absolute -bottom-0.5 -right-0.5 text-lg bg-[#0a0a0c] rounded-full p-0.5 leading-none shadow-md">{player.flag}</span>
               </div>
 
               {/* Player Name */}

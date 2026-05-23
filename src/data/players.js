@@ -123,7 +123,8 @@ export const generateMassivePool = (existingNames) => {
   let idCounter = 1;
 
   POOL_CATEGORIES.forEach(category => {
-    for (let i = 0; i < 20; i++) {
+    const playersPerSet = category.tier === 'MARQUEE' ? 10 : 12;
+    for (let i = 0; i < playersPerSet; i++) {
       let rating;
       let basePrice;
 
@@ -145,6 +146,9 @@ export const generateMassivePool = (existingNames) => {
 
       const role = category.roles[Math.floor(Math.random() * category.roles.length)];
       const name = getName(category.tier, role);
+
+      // Skip if we've run out of real names entirely
+      if (name.startsWith('Prospect')) continue;
 
       generatedPool.push({
         id: `pool_${idCounter++}`,
