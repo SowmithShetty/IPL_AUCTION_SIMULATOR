@@ -11,16 +11,16 @@ export const TIERS = {
     WK: ['MS. Dhoni', 'J. Buttler', 'Q. de Kock', 'K. Rahul', 'R. Pant', 'S. Samson', 'N. Pooran', 'H. Klaasen', 'I. Kishan', 'P. Salt', 'J. Bairstow']
   },
   CAPPED: {
-    BAT: ['F. du Plessis', 'D. Warner', 'S. Smith', 'K. Williamson', 'T. Varma', 'R. Singh', 'N. Rana', 'R. Tripathi', 'S. Sudharsan', 'D. Miller', 'A. Markram', 'H. Brook', 'W. Jacks', 'B. Duckett', 'T. David', 'O. Pope', 'P. Nissanka', 'C. Asalanka', 'J. Fraser-McGurk'],
-    BOWL: ['A. Nortje', 'B. Kumar', 'H. Patel', 'Y. Chahal', 'K. Yadav', 'S. Narine', 'R. Ashwin', 'A. Zampa', 'M. Theekshana', 'W. Hasaranga', 'M. Siraj', 'A. Singh', 'D. Chahar', 'L. Ferguson', 'M. Wood', 'A. Joseph', 'O. McCoy', 'F. Farooqi', 'N. Ul-Haq', 'M. Sharma', 'P. Krishna', 'K. Ahmed', 'C. Sakariya', 'R. Bishnoi', 'V. Chakravarthy', 'M. Rahman', 'N. Ellis', 'S. Abbott'],
-    AR: ['J. Holder', 'M. Ali', 'A. Patel', 'K. Pandya', 'S. Dube', 'V. Shankar', 'R. Tewatia', 'L. Livingstone', 'D. Mitchell', 'R. Ravindra', 'R. Shepherd', 'D. Sams', 'A. Omarzai', 'G. Naib', 'S. Raza', 'C. Woakes', 'S. Williams', 'M. Bracewell', 'K. Mayers', 'R. Cornwall', 'D. Hooda'],
-    WK: ['M. Wade', 'R. Gurbaz', 'D. Conway', 'A. Carey', 'T. Banton', 'J. Inglis', 'B. McDermott', 'A. Fletcher', 'S. Hope', 'J. Cox', 'R. Rickelton', 'P. Handscomb', 'J. Clarke', 'T. Seifert', 'J. Sharma']
+    BAT: ['F. du Plessis', 'D. Warner', 'S. Smith', 'K. Williamson', 'T. Varma', 'R. Singh', 'N. Rana', 'R. Tripathi', 'S. Sudharsan', 'D. Miller', 'A. Markram', 'H. Brook', 'W. Jacks', 'B. Duckett', 'T. David', 'O. Pope', 'P. Nissanka', 'C. Asalanka', 'J. Fraser-McGurk', 'D. Padikkal', 'P. Shaw', 'M. Agarwal', 'S. Dhawan', 'V. Iyer', 'A. Rayudu', 'M. Pandey', 'K. Nair'],
+    BOWL: ['A. Nortje', 'B. Kumar', 'H. Patel', 'Y. Chahal', 'K. Yadav', 'S. Narine', 'R. Ashwin', 'A. Zampa', 'M. Theekshana', 'W. Hasaranga', 'M. Siraj', 'A. Singh', 'D. Chahar', 'L. Ferguson', 'M. Wood', 'A. Joseph', 'O. McCoy', 'F. Farooqi', 'N. Ul-Haq', 'M. Sharma', 'P. Krishna', 'K. Ahmed', 'C. Sakariya', 'R. Bishnoi', 'V. Chakravarthy', 'M. Rahman', 'N. Ellis', 'S. Abbott', 'U. Yadav', 'T. Natarajan', 'J. Unadkat', 'P. Chawla', 'A. Mishra', 'S. Kaul', 'D. Kulkarni', 'I. Tahir'],
+    AR: ['J. Holder', 'M. Ali', 'A. Patel', 'K. Pandya', 'S. Dube', 'V. Shankar', 'R. Tewatia', 'L. Livingstone', 'D. Mitchell', 'R. Ravindra', 'R. Shepherd', 'D. Sams', 'A. Omarzai', 'G. Naib', 'S. Raza', 'C. Woakes', 'S. Williams', 'M. Bracewell', 'K. Mayers', 'R. Cornwall', 'D. Hooda', 'S. Thakur', 'Y. Pathan', 'K. Gowtham', 'R. Parag', 'K. Pollard'],
+    WK: ['M. Wade', 'R. Gurbaz', 'D. Conway', 'A. Carey', 'T. Banton', 'J. Inglis', 'B. McDermott', 'A. Fletcher', 'S. Hope', 'J. Cox', 'R. Rickelton', 'P. Handscomb', 'J. Clarke', 'T. Seifert', 'J. Sharma', 'W. Saha', 'D. Karthik', 'P. Patel', 'L. Ronchi', 'K. Perera', 'S. Billings']
   },
   UNCAPPED: {
-    BAT: ['A. Sharma', 'N. Wadhera', 'A. Badoni', 'S. Rizvi', 'S. Singh', 'A. Manohar', 'A. Taide', 'D. Brevis', 'T. Stubbs', 'L. Evans', 'N. Maddinson', 'M. Bryant', 'H. Cartwright', 'S. Heazlett', 'J. Weatherald', 'J. Sangha', 'A. Hose', 'S. Hain', 'M. Holden', 'C. Ingram', 'P. Stirling', 'B. King', 'R. Hendricks', 'A. Roy', 'P. Garg', 'S. Khan', 'R. Ghosh', 'Y. Dhull', 'P. Mankad', 'A. Tomar', 'R. Darji', 'M. Singh', 'A. Deshpande', 'H. Singh', 'P. Singh'],
-    BOWL: ['A. Madhwal', 'Y. Dayal', 'H. Brar', 'S. Gopal', 'R. Meredith', 'C. Jordan', 'R. Gleeson', 'K. Richardson', 'J. Behrendorff', 'B. Stanlake', 'C. Tremain', 'M. Steketee', 'J. Paris', 'W. Agar', 'B. Dwarshuis', 'M. Parkinson', 'C. Parkinson', 'L. Wood', 'S. Mahmood', 'R. Rampaul', 'O. Thomas', 'S. Cottrell', 'K. Williams', 'R. Emrit', 'D. Drake', 'K. Pierre', 'M. Nabi', 'S. Lamichhane', 'A. Tye', 'J. Pattinson', 'M. Dagar', 'S. Tyagi', 'Y. Thakur', 'K. Tyagi', 'A. Vashisht', 'R. Hangargekar', 'V. Ostwal', 'S. Desai'],
-    AR: ['G. Singh', 'H. Shokeen', 'M. Lomror', 'J. Overton', 'T. Curran', 'A. Hardie', 'B. Webster', 'L. Gregory', 'C. Overton', 'P. Walter', 'K. Janat', 'T. Perera', 'A. Mathews', 'D. Shanaka', 'M. Henriques', 'N. Sindhu', 'V. Arora', 'A. Tendulkar', 'P. Ray Barman', 'S. Mulani', 'A. Juyal'],
-    WK: ['D. Jurel', 'P. Singh', 'K. Bharat', 'A. Porel', 'N. Jagadeesan', 'A. Rawat', 'K. Singh', 'B. Indrajith', 'S. Goswami', 'C. Jackson', 'A. Davies', 'J. Peirson', 'S. Whiteman', 'C. Bancroft', 'M. Gilkes', 'H. Nielsen', 'T. Moores', 'S. Taylor', 'R. Davies', 'G. Roelofsen', 'C. Fortuin', 'S. Erwee', 'M. Breetzke', 'P. Moor', 'C. Madande', 'B. Taylor', 'U. Bose', 'B. Kumar', 'K. Rathour', 'L. Sisodia', 'A. Tare']
+    BAT: ['A. Sharma', 'N. Wadhera', 'A. Badoni', 'S. Rizvi', 'S. Singh', 'A. Manohar', 'A. Taide', 'D. Brevis', 'T. Stubbs', 'L. Evans', 'N. Maddinson', 'M. Bryant', 'H. Cartwright', 'S. Heazlett', 'J. Weatherald', 'J. Sangha', 'A. Hose', 'S. Hain', 'M. Holden', 'C. Ingram', 'P. Stirling', 'B. King', 'R. Hendricks', 'A. Roy', 'P. Garg', 'S. Khan', 'R. Ghosh', 'Y. Dhull', 'P. Mankad', 'A. Tomar', 'R. Darji', 'M. Singh', 'A. Deshpande', 'H. Singh', 'P. Singh', 'S. Tiwary', 'K. Jadhav', 'U. Chand', 'P. Chand', 'V. Kutty'],
+    BOWL: ['A. Madhwal', 'Y. Dayal', 'H. Brar', 'S. Gopal', 'R. Meredith', 'C. Jordan', 'R. Gleeson', 'K. Richardson', 'J. Behrendorff', 'B. Stanlake', 'C. Tremain', 'M. Steketee', 'J. Paris', 'W. Agar', 'B. Dwarshuis', 'M. Parkinson', 'C. Parkinson', 'L. Wood', 'S. Mahmood', 'R. Rampaul', 'O. Thomas', 'S. Cottrell', 'K. Williams', 'R. Emrit', 'D. Drake', 'K. Pierre', 'M. Nabi', 'S. Lamichhane', 'A. Tye', 'J. Pattinson', 'M. Dagar', 'S. Tyagi', 'Y. Thakur', 'K. Tyagi', 'A. Vashisht', 'R. Hangargekar', 'V. Ostwal', 'S. Desai', 'M. Markande', 'S. Sharma', 'K. Khejroliya', 'A. Rajpoot', 'S. Ravi'],
+    AR: ['G. Singh', 'H. Shokeen', 'M. Lomror', 'J. Overton', 'T. Curran', 'A. Hardie', 'B. Webster', 'L. Gregory', 'C. Overton', 'P. Walter', 'K. Janat', 'T. Perera', 'A. Mathews', 'D. Shanaka', 'M. Henriques', 'N. Sindhu', 'V. Arora', 'A. Tendulkar', 'P. Ray Barman', 'S. Mulani', 'A. Juyal', 'V. Singh', 'D. Nalkande', 'A. Sarkar', 'S. Rana', 'P. Choudhary'],
+    WK: ['D. Jurel', 'P. Singh', 'K. Bharat', 'A. Porel', 'N. Jagadeesan', 'A. Rawat', 'K. Singh', 'B. Indrajith', 'S. Goswami', 'C. Jackson', 'A. Davies', 'J. Peirson', 'S. Whiteman', 'C. Bancroft', 'M. Gilkes', 'H. Nielsen', 'T. Moores', 'S. Taylor', 'R. Davies', 'G. Roelofsen', 'C. Fortuin', 'S. Erwee', 'M. Breetzke', 'P. Moor', 'C. Madande', 'B. Taylor', 'U. Bose', 'B. Kumar', 'K. Rathour', 'L. Sisodia', 'A. Tare', 'S. Bharat', 'R. Smarsh', 'A. Kazi']
   }
 };
 
@@ -123,8 +123,7 @@ export const generateMassivePool = (existingNames) => {
   let idCounter = 1;
 
   POOL_CATEGORIES.forEach(category => {
-    const playersPerSet = category.tier === 'MARQUEE' ? 10 : 12;
-    for (let i = 0; i < playersPerSet; i++) {
+    for (let i = 0; i < 20; i++) {
       let rating;
       let basePrice;
 
@@ -146,9 +145,6 @@ export const generateMassivePool = (existingNames) => {
 
       const role = category.roles[Math.floor(Math.random() * category.roles.length)];
       const name = getName(category.tier, role);
-
-      // Skip if we've run out of real names entirely
-      if (name.startsWith('Prospect')) continue;
 
       generatedPool.push({
         id: `pool_${idCounter++}`,

@@ -65,19 +65,19 @@ export default function PoolModal({ onClose, poolData }) {
               {poolData.filter(p => p.setId === activeSet).map((player) => {
                 const evalData = player.status === 'SOLD' ? getDealEvaluation(player.price, player.rating, player.basePrice) : null;
                 return (
-                  <div key={player.id} className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 md:p-5 flex flex-col relative overflow-hidden backdrop-blur-sm hover:bg-white/[0.06] transition-colors">
+                  <div key={player.id} className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 md:p-5 flex flex-col relative overflow-hidden backdrop-blur-sm hover:bg-white/[0.06] transition-colors min-w-0">
                     <div className={`absolute top-0 left-0 w-1.5 h-full ${
                       player.status === 'SOLD' ? 'bg-emerald-500' :
                       (player.status === 'UNSOLD' || player.status === 'SKIPPED') ? 'bg-rose-500' : 'bg-zinc-700'
                     }`} />
-                    <div className="flex justify-between items-start mb-3 pl-3">
-                      <div>
-                        <h3 className="font-black italic text-lg md:text-xl tracking-tight text-white">
+                    <div className="flex justify-between items-start mb-3 pl-4">
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-black italic text-lg md:text-xl tracking-tight text-white truncate">
                           {player.flag} {player.name}
                         </h3>
-                        <div className="text-[10px] text-zinc-400 uppercase font-bold tracking-widest mb-2 flex items-center gap-1.5">
-                          {player.style} <span className="text-zinc-700">•</span>
-                          <span className="bg-white/10 px-1.5 py-0.5 rounded text-[9px] font-black tracking-widest uppercase text-zinc-300">{player.countryName}</span>
+                        <div className="text-[10px] text-zinc-400 uppercase font-bold tracking-widest mb-2 flex items-center gap-1.5 flex-wrap">
+                          <span className="truncate max-w-[160px]">{player.style}</span> <span className="text-zinc-700 shrink-0">•</span>
+                          <span className="bg-white/10 px-1.5 py-0.5 rounded text-[9px] font-black tracking-widest uppercase text-zinc-300 shrink-0">{player.countryName}</span>
                         </div>
                         <div className="flex gap-2 items-center">
                           <span className="text-[9px] bg-black/50 px-2 py-1 rounded font-black tracking-widest text-zinc-300 uppercase border border-white/10">{player.role}</span>
@@ -88,7 +88,7 @@ export default function PoolModal({ onClose, poolData }) {
                       </div>
                     </div>
 
-                    <div className="pl-3 mb-3 grid grid-cols-4 gap-2 text-center bg-black/30 rounded-lg p-2 border border-white/5">
+                    <div className="pl-4 mb-3 grid grid-cols-4 gap-2 text-center bg-black/30 rounded-lg p-2 border border-white/5">
                       <div><div className="text-[8px] text-zinc-500 uppercase font-black">MAT</div><div className="text-xs font-mono text-white">{player.stats.matches}</div></div>
                       {player.role === 'BOWL' ? (
                         <>
@@ -105,7 +105,7 @@ export default function PoolModal({ onClose, poolData }) {
                       )}
                     </div>
 
-                    <div className="pl-3 mt-auto pt-3 border-t border-white/5 flex justify-between items-end">
+                    <div className="pl-4 mt-auto pt-3 border-t border-white/5 flex justify-between items-end gap-3">
                       <div>
                         <div className="text-[9px] text-zinc-500 uppercase font-black tracking-widest mb-1">Status</div>
                         <div className={`text-xs font-black uppercase tracking-widest ${
