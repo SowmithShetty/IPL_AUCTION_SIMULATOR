@@ -280,6 +280,130 @@ class SoundEngine {
 // Singleton
 export const soundEngine = new SoundEngine();
 
+// --- PRONUNCIATION DICTIONARY FOR IPL PLAYERS ---
+const PRONUNCIATION_MAP = {
+  'V. Kohli': 'Virat Kohli',
+  'R. Sharma': 'Rohit Sharma',
+  'S. Gill': 'Shubman Gill',
+  'T. Head': 'Travis Head',
+  'S. Yadav': 'Sooryakumar Yadav',
+  'S. Iyer': 'Shreyas Iyer',
+  'R. Gaikwad': 'Ruturaj Gaekwad',
+  'Y. Jaiswal': 'Yashasvi Jaiswal',
+  'R. Patidar': 'Rajat Patidar',
+  'J. Bumrah': 'Jasprit Bumrah',
+  'T. Boult': 'Trent Boult',
+  'K. Rabada': 'Kagiso Rabada',
+  'P. Cummins': 'Pat Cummins',
+  'M. Starc': 'Mitchell Starc',
+  'J. Archer': 'Jofra Archer',
+  'M. Shami': 'Mohammed Shami',
+  'R. Khan': 'Rashid Khan',
+  'J. Hazlewood': 'Josh Hazlewood',
+  'M. Pathirana': 'Matheesha Pathirana',
+  'MS. Dhoni': 'Mahendra Singh Dhoni',
+  'J. Buttler': 'Jos Buttler',
+  'Q. de Kock': 'Quinton de Kock',
+  'K. Rahul': 'K L Rahul',
+  'R. Pant': 'Rishabh Pant',
+  'S. Samson': 'Sanju Samson',
+  'N. Pooran': 'Nicholas Pooran',
+  'H. Klaasen': 'Heinrich Klaasen',
+  'I. Kishan': 'Ishan Kishan',
+  'P. Salt': 'Phil Salt',
+  'J. Bairstow': 'Jonny Bairstow',
+  'H. Pandya': 'Hardik Pandya',
+  'B. Stokes': 'Ben Stokes',
+  'R. Jadeja': 'Ravindra Jadeja',
+  'G. Maxwell': 'Glenn Maxwell',
+  'S. Curran': 'Sam Curran',
+  'M. Stoinis': 'Marcus Stoinis',
+  'A. Russell': 'Andre Russell',
+  'C. Green': 'Cameron Green',
+  'M. Jansen': 'Marco Jansen',
+  'W. Sundar': 'Washington Sundar',
+  'F. du Plessis': 'Faf du Plessis',
+  'D. Warner': 'David Warner',
+  'S. Smith': 'Steve Smith',
+  'K. Williamson': 'Kane Williamson',
+  'T. Varma': 'Tilak Varma',
+  'R. Singh': 'Rinku Singh',
+  'D. Miller': 'David Miller',
+  'A. Markram': 'Aiden Markram',
+  'H. Brook': 'Harry Brook',
+  'W. Jacks': 'Will Jacks',
+  'J. Fraser-McGurk': 'Jake Fraser McGurk',
+  'A. Nortje': 'Anrich Nortje',
+  'B. Kumar': 'Bhuvneshwar Kumar',
+  'H. Patel': 'Harshal Patel',
+  'Y. Chahal': 'Yuzvendra Chahal',
+  'K. Yadav': 'Kuldeep Yadav',
+  'S. Narine': 'Sunil Narine',
+  'R. Ashwin': 'Ravichandran Ashwin',
+  'M. Siraj': 'Mohammed Siraj',
+  'A. Singh': 'Arshdeep Singh',
+  'D. Chahar': 'Deepak Chahar',
+  'L. Ferguson': 'Lockie Ferguson',
+  'M. Wood': 'Mark Wood',
+  'F. Farooqi': 'Fazalhaq Farooqi',
+  'N. Ul-Haq': 'Naveen ul Haq',
+  'V. Chakravarthy': 'Varun Chakravarthy',
+  'R. Bishnoi': 'Ravi Bishnoi',
+  'A. Patel': 'Axar Patel',
+  'K. Pandya': 'Krunal Pandya',
+  'S. Dube': 'Shivam Dube',
+  'R. Tewatia': 'Rahul Tewatia',
+  'L. Livingstone': 'Liam Livingstone',
+  'D. Mitchell': 'Daryl Mitchell',
+  'R. Ravindra': 'Rachin Ravindra',
+  'A. Omarzai': 'Azmatullah Omarzai',
+  'D. Hooda': 'Deepak Hooda',
+  'R. Gurbaz': 'Rahmanullah Gurbaz',
+  'D. Conway': 'Devon Conway',
+  'J. Sharma': 'Jitesh Sharma',
+  'A. Sharma': 'Abhishek Sharma',
+  'A. Badoni': 'Ayush Badoni',
+  'T. Stubbs': 'Tristan Stubbs',
+  'D. Brevis': 'Dewald Brevis',
+  'D. Jurel': 'Dhruv Jurel',
+  'A. Madhwal': 'Akash Madhwal',
+  'Y. Dayal': 'Yash Dayal',
+  'M. Lomror': 'Mahipal Lomror',
+  'A. Tendulkar': 'Arjun Tendulkar',
+};
+
+// Voice cache
+let cachedVoices = [];
+const loadVoices = () => {
+  if (typeof window !== 'undefined' && window.speechSynthesis) {
+    cachedVoices = window.speechSynthesis.getVoices();
+  }
+};
+if (typeof window !== 'undefined' && window.speechSynthesis) {
+  loadVoices();
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+const selectBestVoice = () => {
+  if (typeof window === 'undefined' || !window.speechSynthesis) return null;
+  const voices = cachedVoices.length > 0 ? cachedVoices : window.speechSynthesis.getVoices();
+  if (voices.length === 0) return null;
+
+  // Prefer en-IN voices
+  const enIN = voices.filter(v => v.lang.toLowerCase().replace('_', '-') === 'en-in');
+  if (enIN.length > 0) return enIN.find(v => v.name.toLowerCase().includes('google')) || enIN[0];
+
+  // Then premium English voices
+  const preferred = ['natural', 'google uk english', 'google us english', 'daniel', 'samantha'];
+  for (const sub of preferred) {
+    const found = voices.find(v => v.name.toLowerCase().includes(sub) && v.lang.toLowerCase().startsWith('en'));
+    if (found) return found;
+  }
+
+  const english = voices.filter(v => v.lang.toLowerCase().startsWith('en'));
+  return english.length > 0 ? english[0] : voices[0] || null;
+};
+
 // --- ENHANCED SPEECH SYNTHESIS ---
 const AUCTIONEER_PHRASES = {
   playerIntro: [
