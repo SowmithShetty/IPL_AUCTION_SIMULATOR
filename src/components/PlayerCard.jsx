@@ -59,7 +59,7 @@ export default function PlayerCard({ player, status, currentBid, getDealEvaluati
         animate={{ opacity: 1, y: 0, rotateY: 0, scale: 1 }}
         exit={{ opacity: 0, scale: 0.85, y: -30 }}
         transition={{ type: "spring", stiffness: 180, damping: 20 }}
-        className="w-full max-w-[360px] xl:max-w-md bg-gradient-to-br from-white/10 to-white/[0.03] rounded-[2.5rem] rounded-tr-xl rounded-bl-xl p-[2px] border border-white/10 shadow-2xl relative overflow-hidden backdrop-blur-xl shrink-0"
+        className="w-full max-w-sm lg:max-w-md bg-gradient-to-br from-white/10 to-white/[0.03] rounded-[2.5rem] rounded-tr-xl rounded-bl-xl p-[2px] border border-white/10 shadow-2xl relative overflow-hidden backdrop-blur-xl shrink-0"
         style={{ perspective: '1000px' }}
       >
         {/* Ambient glow */}
