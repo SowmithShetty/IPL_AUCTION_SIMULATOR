@@ -1,14 +1,14 @@
 import { useEffect, useState, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 /**
- * CountdownTimer — Circular countdown ring that creates real auction urgency.
- * Green → Yellow → Red as time expires.
- * Shows "Going once... Going twice..." text.
+ * CountdownTimer — Heart-pounding auction urgency driver.
+ * Large circular ring with dramatic "Going Once / Going Twice" text,
+ * color transitions, and screen-edge urgency effects.
  */
 export default function CountdownTimer({ isActive, duration = 6, onExpire, onGoingOnce, onGoingTwice }) {
   const [timeLeft, setTimeLeft] = useState(duration);
-  const [phase, setPhase] = useState('idle'); // idle, counting, going_once, going_twice
+  const [phase, setPhase] = useState('idle');
   const intervalRef = useRef(null);
   const hasCalledOnce = useRef(false);
   const hasCalledTwice = useRef(false);
@@ -46,8 +46,8 @@ export default function CountdownTimer({ isActive, duration = 6, onExpire, onGoi
   // Phase transitions
   useEffect(() => {
     if (!isActive) return;
-    const threshold1 = duration * 0.6; // ~3.6s for 6s timer
-    const threshold2 = duration * 0.3; // ~1.8s for 6s timer
+    const threshold1 = duration * 0.6;
+    const threshold2 = duration * 0.3;
 
     if (timeLeft <= threshold2 && timeLeft > 0 && !hasCalledTwice.current) {
       setPhase('going_twice');
@@ -63,74 +63,156 @@ export default function CountdownTimer({ isActive, duration = 6, onExpire, onGoi
   if (!isActive && phase === 'idle') return null;
 
   const progress = timeLeft / duration;
-  const circumference = 2 * Math.PI * 38;
+  const circumference = 2 * Math.PI * 52;
   const strokeDashoffset = circumference * (1 - progress);
 
-  // Color based on time remaining
-  let ringColor = '#10b981'; // green
+  // Color and urgency states
+  let ringColor = '#10b981';
   let textColor = 'text-emerald-400';
-  let bgGlow = 'shadow-[0_0_20px_rgba(16,185,129,0.2)]';
+  let bgGlow = '';
+  let isUrgent = false;
+  let isCritical = false;
+
   if (progress < 0.3) {
-    ringColor = '#ef4444'; // red
+    ringColor = '#ef4444';
     textColor = 'text-rose-400';
-    bgGlow = 'shadow-[0_0_25px_rgba(239,68,68,0.3)]';
+    isCritical = true;
   } else if (progress < 0.6) {
-    ringColor = '#f59e0b'; // amber
+    ringColor = '#f59e0b';
     textColor = 'text-amber-400';
-    bgGlow = 'shadow-[0_0_20px_rgba(245,158,11,0.25)]';
+    isUrgent = true;
   }
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.8 }}
-      className={`flex flex-col items-center gap-2 ${bgGlow} rounded-full p-1`}
-    >
-      <div className="relative w-20 h-20 md:w-24 md:h-24">
-        {/* Background ring */}
-        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 80 80">
-          <circle cx="40" cy="40" r="38" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="3" />
-          <circle
-            cx="40" cy="40" r="38"
-            fill="none"
-            stroke={ringColor}
-            strokeWidth="3.5"
-            strokeLinecap="round"
-            strokeDasharray={circumference}
-            strokeDashoffset={strokeDashoffset}
-            className="transition-all duration-100"
-          />
-        </svg>
+  // Tick marks around the ring
+  const totalTicks = 30;
+  const activeTicks = Math.ceil(progress * totalTicks);
 
-        {/* Center text */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className={`text-lg md:text-xl font-black italic tabular-nums ${textColor}`}>
-            {Math.ceil(timeLeft)}
-          </span>
+  return (
+    <div className="relative flex flex-col items-center">
+      {/* Screen edge urgency glow */}
+      <AnimatePresence>
+        {isCritical && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 0.15, 0] }}
+            transition={{ duration: 0.8, repeat: Infinity }}
+            className="fixed inset-0 pointer-events-none z-50"
+            style={{
+              boxShadow: 'inset 0 0 120px rgba(239, 68, 68, 0.3), inset 0 0 60px rgba(239, 68, 68, 0.1)',
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Main timer container */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.7 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className={`relative ${isCritical ? 'heartbeat' : ''}`}
+      >
+        {/* Outer glow ring */}
+        <div
+          className="absolute -inset-3 rounded-full opacity-30 blur-xl transition-all duration-300"
+          style={{ background: ringColor }}
+        />
+
+        <div className="relative w-28 h-28 md:w-32 md:h-32">
+          {/* Tick marks */}
+          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 120 120">
+            {Array.from({ length: totalTicks }).map((_, i) => {
+              const angle = (i / totalTicks) * 360 - 90;
+              const rad = (angle * Math.PI) / 180;
+              const isVisible = i < activeTicks;
+              const x1 = 60 + Math.cos(rad) * 54;
+              const y1 = 60 + Math.sin(rad) * 54;
+              const x2 = 60 + Math.cos(rad) * 58;
+              const y2 = 60 + Math.sin(rad) * 58;
+              return (
+                <line
+                  key={i}
+                  x1={x1} y1={y1} x2={x2} y2={y2}
+                  stroke={isVisible ? ringColor : 'rgba(255,255,255,0.06)'}
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  className="transition-all duration-200"
+                  style={{ opacity: isVisible ? (isCritical ? 0.9 : 0.6) : 0.3 }}
+                />
+              );
+            })}
+          </svg>
+
+          {/* Background ring */}
+          <svg className="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="4" />
+            <circle
+              cx="60" cy="60" r="52"
+              fill="none"
+              stroke={ringColor}
+              strokeWidth="4.5"
+              strokeLinecap="round"
+              strokeDasharray={circumference}
+              strokeDashoffset={strokeDashoffset}
+              className="transition-all duration-100"
+              style={{
+                filter: `drop-shadow(0 0 ${isCritical ? '12' : '6'}px ${ringColor})`,
+              }}
+            />
+          </svg>
+
+          {/* Center content */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className={`text-2xl md:text-3xl font-display font-black italic tabular-nums ${textColor} transition-colors duration-300`}>
+              {Math.ceil(timeLeft)}
+            </span>
+            <span className="text-[8px] text-zinc-600 font-black uppercase tracking-widest font-display">
+              SEC
+            </span>
+          </div>
         </div>
+      </motion.div>
+
+      {/* Digital readout */}
+      <div className={`mt-2 text-[11px] font-mono font-bold tabular-nums ${textColor} transition-colors`}>
+        00:{timeLeft.toFixed(1).padStart(4, '0')}
       </div>
 
-      {/* Phase text */}
-      {phase === 'going_once' && (
-        <motion.span
-          initial={{ opacity: 0, y: 5 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-[9px] font-black uppercase tracking-[0.2em] text-amber-400"
-        >
-          Going Once...
-        </motion.span>
-      )}
-      {phase === 'going_twice' && (
-        <motion.span
-          initial={{ opacity: 0, y: 5 }}
-          animate={{ opacity: [1, 0.5, 1] }}
-          transition={{ repeat: Infinity, duration: 0.6 }}
-          className="text-[9px] font-black uppercase tracking-[0.2em] text-rose-400"
-        >
-          Going Twice!
-        </motion.span>
-      )}
-    </motion.div>
+      {/* Phase text — DRAMATIC */}
+      <AnimatePresence mode="wait">
+        {phase === 'going_once' && (
+          <motion.div
+            key="once"
+            initial={{ scale: 2.5, opacity: 0, y: -15 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+            className="mt-3"
+          >
+            <span className="text-sm md:text-base font-display font-black uppercase tracking-[0.15em] text-amber-400 px-4 py-1.5 bg-amber-500/10 border border-amber-500/25 rounded-lg"
+              style={{ textShadow: '0 0 20px rgba(245, 158, 11, 0.5)' }}
+            >
+              ⚡ Going Once...
+            </span>
+          </motion.div>
+        )}
+        {phase === 'going_twice' && (
+          <motion.div
+            key="twice"
+            initial={{ scale: 2.5, opacity: 0, y: -15 }}
+            animate={{ scale: [1, 1.05, 1], opacity: 1, y: 0 }}
+            transition={{
+              scale: { repeat: Infinity, duration: 0.6 },
+              default: { type: 'spring', stiffness: 400, damping: 15 }
+            }}
+            className="mt-3"
+          >
+            <span className="text-sm md:text-base font-display font-black uppercase tracking-[0.15em] text-rose-400 px-4 py-1.5 bg-rose-500/15 border border-rose-500/30 rounded-lg"
+              style={{ textShadow: '0 0 25px rgba(239, 68, 68, 0.6)' }}
+            >
+              🔥 Going Twice!
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

@@ -48,6 +48,11 @@ export default function App() {
   const hammerTimerRef = useRef(null);
   const aiTimerRef = useRef(null);
 
+  // Team data for header
+  const teamData = userFranchise ? TEAM_DATA[userFranchise] : null;
+  const TeamIcon = teamData?.icon;
+  const teamAccent = teamData?.accent || '#10b981';
+
   // Initialize sound engine on first interaction
   useEffect(() => {
     const initSound = () => {
@@ -128,7 +133,6 @@ export default function App() {
   useEffect(() => {
     if (phase !== 'AUCTION' || auctionStatus !== 'BIDDING' || !currentPlayer) return;
 
-    // Slower AI delay (2.8s to 4.2s with bid, 3.2s to 4.7s without bid) to let the timer count down
     const aiDelay = highestBidder 
       ? 2800 + Math.random() * 1400 
       : 3200 + Math.random() * 1500;
@@ -172,15 +176,10 @@ export default function App() {
     setHighestBidder(bidder);
     setBidCount(prev => {
       const newCount = prev + 1;
-
-      // Play escalating bid sound
       soundEngine.playBidEscalate(newCount);
-
-      // Bidding war commentary
       if (newCount === 4) {
         doSpeak(getAuctioneerLine('biddingWar'));
       }
-
       return newCount;
     });
 
@@ -265,7 +264,7 @@ export default function App() {
     }
   }, [currentPlayer, highestBidder, currentBid, userFranchise, doSpeak]);
 
-  // --- GOING ONCE / TWICE COMMENTARY CUES ---
+  // --- GOING ONCE / TWICE ---
   const handleGoingOnce = useCallback(() => {
     const displayName = highestBidder === 'USER' ? userFranchise : highestBidder;
     if (displayName) {
@@ -298,7 +297,6 @@ export default function App() {
       setAuctionStatus('BIDDING');
       setBidCount(0);
 
-      // Set change announcement
       if (currentSetId && next.setId !== currentSetId) {
         addLog(`Moving to ${next.setName}`, 'system');
         doSpeak(getAuctioneerLine('setChange', next.setName));
@@ -345,44 +343,92 @@ export default function App() {
     }
   };
 
+  // Purse percentage for visual bar
+  const pursePercent = (userPurse / 100) * 100;
+
   return (
     <div className="min-h-screen bg-[#050505] text-zinc-100 font-sans selection:bg-emerald-500/30 overflow-hidden flex flex-col relative">
       <ThreeBackground />
 
       {/* Header */}
-      <header className="border-b border-white/10 bg-[#0a0a0a]/80 backdrop-blur-xl p-3 md:p-4 flex justify-between items-center z-10 relative">
-        <div className="flex items-center gap-2 md:gap-3">
-          <div className="p-1.5 md:p-2 bg-emerald-500/10 rounded-lg border border-emerald-500/30">
-            <Fingerprint className="text-emerald-400 w-5 h-5 md:w-6 md:h-6" />
+      <header className="border-b border-white/[0.06] bg-[#0a0a0a]/85 backdrop-blur-xl p-3 md:p-4 flex justify-between items-center z-10 relative">
+        <div className="flex items-center gap-2.5 md:gap-3">
+          {/* Logo */}
+          <div className="p-1.5 md:p-2 rounded-lg border"
+            style={{
+              background: `${teamAccent}10`,
+              borderColor: `${teamAccent}25`,
+            }}
+          >
+            {TeamIcon ? (
+              <TeamIcon className="w-5 h-5 md:w-6 md:h-6" style={{ color: teamAccent }} />
+            ) : (
+              <Fingerprint className="w-5 h-5 md:w-6 md:h-6 text-emerald-400" />
+            )}
           </div>
+
           <div>
-            <h1 className="text-base md:text-xl font-black tracking-tighter italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200 uppercase">
-              IPL Mega Auction
-            </h1>
-            <div className="text-[8px] text-zinc-600 font-bold uppercase tracking-[0.2em] hidden md:block">
-              Live Auction Simulator
+            <div className="flex items-center gap-2">
+              <h1 className="text-base md:text-xl font-display font-black tracking-tighter italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200 uppercase">
+                IPL Mega Auction
+              </h1>
+              {/* LIVE indicator during auction */}
+              {phase === 'AUCTION' && (
+                <div className="flex items-center gap-1 bg-rose-500/10 border border-rose-500/20 px-2 py-0.5 rounded-full">
+                  <div className="w-1.5 h-1.5 rounded-full bg-rose-500 live-pulse" />
+                  <span className="text-[8px] font-display font-black uppercase tracking-widest text-rose-400">Live</span>
+                </div>
+              )}
+            </div>
+            <div className="text-[8px] text-zinc-600 font-display font-bold uppercase tracking-[0.2em] hidden md:flex items-center gap-2">
+              {userFranchise ? (
+                <>
+                  <span style={{ color: teamAccent }}>{userFranchise}</span>
+                  <span className="text-zinc-700">•</span>
+                  <span>Auction Simulator</span>
+                </>
+              ) : (
+                'Live Auction Simulator'
+              )}
             </div>
           </div>
         </div>
 
         {phase !== 'SUMMARY' && phase !== 'TEAM_SELECTION' && (
-          <div className="flex items-center gap-3 md:gap-6">
-            <div className="flex gap-1.5 md:gap-2 border-r border-white/10 pr-3 md:pr-6 mr-1 md:mr-2">
-              <button onClick={handleOpenSquad} className="p-1.5 md:p-2 bg-white/5 rounded-full border border-white/10 hover:bg-white/10 transition-colors flex items-center gap-1.5 md:gap-2 px-2.5 md:px-4 text-[10px] md:text-sm font-bold text-zinc-300">
-                <Shield className="w-3.5 h-3.5 md:w-4 md:h-4 text-emerald-400" /> <span className="hidden md:inline">My Squad</span>
+          <div className="flex items-center gap-3 md:gap-5">
+            {/* Action buttons */}
+            <div className="flex gap-1.5 md:gap-2 border-r border-white/[0.06] pr-3 md:pr-5 mr-1">
+              <button onClick={handleOpenSquad} className="p-1.5 md:p-2 bg-white/[0.03] rounded-lg border border-white/[0.06] hover:bg-white/[0.08] transition-colors flex items-center gap-1.5 md:gap-2 px-2.5 md:px-4 text-[10px] md:text-xs font-display font-bold text-zinc-300 hover:text-white">
+                <Shield className="w-3.5 h-3.5 md:w-4 md:h-4" style={{ color: teamAccent }} /> <span className="hidden md:inline">Squad</span>
               </button>
-              <button onClick={handleOpenPool} className="p-1.5 md:p-2 bg-rose-500/10 rounded-full border border-rose-500/30 hover:bg-rose-500/20 transition-colors flex items-center gap-1.5 md:gap-2 px-2.5 md:px-4 text-[10px] md:text-sm font-bold text-rose-300 shadow-[0_0_15px_rgba(225,29,72,0.15)]">
+              <button onClick={handleOpenPool} className="p-1.5 md:p-2 bg-rose-500/8 rounded-lg border border-rose-500/20 hover:bg-rose-500/15 transition-colors flex items-center gap-1.5 md:gap-2 px-2.5 md:px-4 text-[10px] md:text-xs font-display font-bold text-rose-300 hover:text-rose-200">
                 <Database className="w-3.5 h-3.5 md:w-4 md:h-4 text-rose-400" /> <span className="hidden md:inline">Intel</span>
               </button>
-              <button onClick={() => setSoundEnabled(!soundEnabled)} className="p-1.5 md:p-2 bg-white/5 rounded-full border border-white/10 hover:bg-white/10 transition-colors" title={soundEnabled ? "Mute" : "Unmute"}>
-                {soundEnabled ? <Volume2 className="w-4 h-4 md:w-5 md:h-5 text-emerald-400" /> : <VolumeX className="w-4 h-4 md:w-5 md:h-5 text-zinc-500" />}
+              <button onClick={() => setSoundEnabled(!soundEnabled)} className="p-1.5 md:p-2 bg-white/[0.03] rounded-lg border border-white/[0.06] hover:bg-white/[0.08] transition-colors" title={soundEnabled ? "Mute" : "Unmute"}>
+                {soundEnabled ? <Volume2 className="w-4 h-4 md:w-5 md:h-5 text-emerald-400" /> : <VolumeX className="w-4 h-4 md:w-5 md:h-5 text-zinc-600" />}
               </button>
             </div>
+
+            {/* Purse display with visual bar */}
             <div className="flex flex-col items-end">
-              <span className="text-[8px] md:text-[10px] text-zinc-500 uppercase tracking-widest font-black">Purse</span>
-              <span className={`text-lg md:text-2xl font-black italic tracking-tighter tabular-nums ${userPurse < 10 ? 'text-rose-500' : 'text-emerald-400'}`}>
-                ₹{userPurse.toFixed(2)} <span className="text-xs md:text-sm">Cr</span>
+              <span className="text-[8px] md:text-[9px] text-zinc-600 uppercase tracking-widest font-display font-black">Purse</span>
+              <span className={`text-lg md:text-2xl font-display font-black italic tracking-tighter tabular-nums ${userPurse < 10 ? 'text-rose-500' : 'text-emerald-400'}`}>
+                ₹{userPurse.toFixed(2)} <span className="text-xs md:text-sm text-zinc-600">Cr</span>
               </span>
+              {/* Purse depletion bar */}
+              <div className="w-20 md:w-28 h-1 bg-white/[0.04] rounded-full mt-0.5 overflow-hidden">
+                <div
+                  className="h-full rounded-full transition-all duration-500"
+                  style={{
+                    width: `${pursePercent}%`,
+                    background: userPurse < 10
+                      ? 'linear-gradient(90deg, #ef4444, #f87171)'
+                      : userPurse < 30
+                      ? 'linear-gradient(90deg, #f59e0b, #fbbf24)'
+                      : `linear-gradient(90deg, ${teamAccent}, ${teamAccent}aa)`,
+                  }}
+                />
+              </div>
             </div>
           </div>
         )}
@@ -391,7 +437,7 @@ export default function App() {
       {/* Main Content */}
       <main className="flex-1 relative overflow-y-auto">
         {/* Grid overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none mix-blend-overlay" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none mix-blend-overlay" />
 
         {phase === 'TEAM_SELECTION' && <TeamSelection onSelect={handleTeamSelection} />}
         {phase === 'RETENTION' && userFranchise && (

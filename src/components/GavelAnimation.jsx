@@ -2,28 +2,32 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 /**
- * GavelAnimation — Dramatic hammer slam overlay on SOLD.
- * Features screen shake, golden particle burst, and expanding shockwave ring.
+ * GavelAnimation — Cinematic hammer slam overlay on SOLD.
+ * Features massive screen shake, team-colored particle burst,
+ * expanding shockwave rings, and price stamp.
  */
-export default function GavelAnimation({ show, onComplete }) {
+export default function GavelAnimation({ show, onComplete, teamAccent, playerName, price }) {
   const [particles, setParticles] = useState([]);
+  const accentColor = teamAccent || '#f59e0b';
 
   useEffect(() => {
     if (show) {
-      // Generate golden particles for the burst effect
-      const newParticles = Array.from({ length: 20 }, (_, i) => ({
+      // Generate particles with team colors
+      const newParticles = Array.from({ length: 30 }, (_, i) => ({
         id: i,
-        x: (Math.random() - 0.5) * 200,
-        y: (Math.random() - 0.5) * 200,
-        size: 3 + Math.random() * 6,
-        delay: Math.random() * 0.2,
-        duration: 0.5 + Math.random() * 0.5,
+        x: (Math.random() - 0.5) * 300,
+        y: (Math.random() - 0.5) * 300,
+        size: 3 + Math.random() * 8,
+        delay: Math.random() * 0.25,
+        duration: 0.6 + Math.random() * 0.6,
+        rotation: Math.random() * 360,
+        isAccent: Math.random() > 0.4,
       }));
       setParticles(newParticles);
 
       const timer = setTimeout(() => {
         if (onComplete) onComplete();
-      }, 1500);
+      }, 2000);
       return () => clearTimeout(timer);
     }
   }, [show]);
@@ -42,73 +46,101 @@ export default function GavelAnimation({ show, onComplete }) {
           <motion.div
             className="absolute inset-0"
             animate={{
-              x: [0, -4, 4, -3, 3, -1, 1, 0],
-              y: [0, -3, 3, -2, 2, -1, 1, 0],
+              x: [0, -6, 6, -5, 5, -3, 3, -1, 0],
+              y: [0, -5, 5, -4, 4, -2, 2, -1, 0],
             }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
           />
 
-          {/* Shockwave ring */}
+          {/* Full-screen flash */}
           <motion.div
-            initial={{ scale: 0, opacity: 0.8 }}
+            initial={{ opacity: 0.5 }}
+            animate={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+            className="absolute inset-0"
+            style={{ background: `radial-gradient(circle at center, ${accentColor}25 0%, transparent 70%)` }}
+          />
+
+          {/* Shockwave ring 1 — team colored */}
+          <motion.div
+            initial={{ scale: 0, opacity: 0.9 }}
+            animate={{ scale: 5, opacity: 0 }}
+            transition={{ duration: 1, ease: 'easeOut' }}
+            className="absolute w-24 h-24 rounded-full"
+            style={{ border: `3px solid ${accentColor}80` }}
+          />
+
+          {/* Shockwave ring 2 */}
+          <motion.div
+            initial={{ scale: 0, opacity: 0.7 }}
             animate={{ scale: 4, opacity: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="absolute w-32 h-32 rounded-full border-4 border-amber-400/60"
+            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.08 }}
+            className="absolute w-20 h-20 rounded-full border-2 border-emerald-400/50"
           />
 
-          {/* Second shockwave */}
+          {/* Shockwave ring 3 */}
           <motion.div
-            initial={{ scale: 0, opacity: 0.6 }}
+            initial={{ scale: 0, opacity: 0.5 }}
             animate={{ scale: 3, opacity: 0 }}
-            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-            className="absolute w-24 h-24 rounded-full border-2 border-emerald-400/40"
+            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.15 }}
+            className="absolute w-16 h-16 rounded-full border-2 border-white/30"
           />
 
-          {/* Gavel icon */}
+          {/* Gavel icon — slamming down */}
           <motion.div
-            initial={{ y: -120, rotate: -45, scale: 1.5 }}
-            animate={{ y: 0, rotate: 0, scale: 1 }}
+            initial={{ y: -150, rotate: -45, scale: 1.8, opacity: 0 }}
+            animate={{ y: 0, rotate: 0, scale: 1, opacity: 1 }}
             transition={{
               type: 'spring',
-              stiffness: 500,
+              stiffness: 600,
               damping: 15,
               duration: 0.4,
             }}
-            className="relative z-10 text-7xl md:text-8xl drop-shadow-[0_0_30px_rgba(245,158,11,0.6)]"
+            className="relative z-10 text-7xl md:text-8xl lg:text-9xl"
+            style={{ filter: `drop-shadow(0 0 40px ${accentColor}80)` }}
           >
             🔨
           </motion.div>
 
-          {/* Flash */}
-          <motion.div
-            initial={{ opacity: 0.7 }}
-            animate={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="absolute inset-0 bg-amber-500/10"
-          />
+          {/* Price stamp that slams in */}
+          {price && (
+            <motion.div
+              initial={{ scale: 3, y: -40, opacity: 0 }}
+              animate={{ scale: 1, y: 60, opacity: 1 }}
+              transition={{ delay: 0.35, type: 'spring', stiffness: 300, damping: 15 }}
+              className="absolute z-20 text-center"
+            >
+              <div className="font-display font-black italic text-3xl md:text-4xl text-white tracking-tighter"
+                style={{ textShadow: `0 0 30px ${accentColor}80` }}
+              >
+                ₹{price} <span className="text-lg text-zinc-400">Crores</span>
+              </div>
+            </motion.div>
+          )}
 
-          {/* Golden particles */}
+          {/* Team-colored particles */}
           {particles.map(p => (
             <motion.div
               key={p.id}
-              initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+              initial={{ x: 0, y: 0, opacity: 1, scale: 1, rotate: 0 }}
               animate={{
                 x: p.x,
                 y: p.y,
                 opacity: 0,
                 scale: 0,
+                rotate: p.rotation,
               }}
               transition={{
                 duration: p.duration,
                 delay: 0.15 + p.delay,
                 ease: 'easeOut',
               }}
-              className="absolute rounded-full"
+              className="absolute rounded-sm"
               style={{
                 width: p.size,
                 height: p.size,
-                background: `hsl(${40 + Math.random() * 20}, 90%, ${60 + Math.random() * 20}%)`,
-                boxShadow: `0 0 ${p.size * 2}px hsl(45, 90%, 60%)`,
+                background: p.isAccent ? accentColor : `hsl(${40 + Math.random() * 20}, 90%, ${60 + Math.random() * 20}%)`,
+                boxShadow: `0 0 ${p.size * 2}px ${p.isAccent ? accentColor : 'hsl(45, 90%, 60%)'}`,
               }}
             />
           ))}
